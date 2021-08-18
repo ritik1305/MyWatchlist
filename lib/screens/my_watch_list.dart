@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mywatchlist/screens/add_movie_screen.dart';
 
 class MyWatchListScreen extends StatefulWidget {
   const MyWatchListScreen({Key? key}) : super(key: key);
@@ -8,17 +9,43 @@ class MyWatchListScreen extends StatefulWidget {
 }
 
 class _MyWatchListScreenState extends State<MyWatchListScreen> {
+  Widget _buildTask(int index) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 25.0),
+      child: Column(
+        children: [
+          ListTile(
+              title: Text('Task Title'),
+              subtitle: Text('Hi'),
+              trailing: Checkbox(
+                onChanged: (value) {
+                  print(value);
+                },
+                activeColor: Theme.of(context).primaryColor,
+                value: true,
+              )),
+          Divider(),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
         child: Icon(Icons.add),
-        onPressed: () => print('Navigate to add task  screen'),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => AddMovieScreen(),
+          ),
+        ),
       ),
       body: ListView.builder(
         padding: EdgeInsets.symmetric(vertical: 80.0),
-        itemCount: 1,
+        itemCount: 10,
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
             return Padding(
@@ -47,7 +74,8 @@ class _MyWatchListScreenState extends State<MyWatchListScreen> {
               ),
             );
           }
-          return Text('');
+
+          return _buildTask(index);
         },
       ),
     );

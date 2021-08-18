@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mywatchlist/helpers/database_helper.dart';
+import 'package:mywatchlist/models/task_model.dart';
 
 class AddMovieScreen extends StatefulWidget {
-  const AddMovieScreen({Key? key}) : super(key: key);
+  final Function updateTaskList;
+  final Task task;
+
+  AddMovieScreen({required this.updateTaskList, required this.task});
+
+  //const AddMovieScreen({Key? key}) : super(key: key);
 
   @override
   _AddMovieScreenState createState() => _AddMovieScreenState();
@@ -17,6 +24,16 @@ class _AddMovieScreenState extends State<AddMovieScreen> {
       _formKey.currentState!.save();
       print('$_title, $_director');
 
+      Task task = Task(title: _title, director: _director);
+      if (widget.task == null) {
+        Task.status = 0;
+        DatabaseHelper.instance.insertTask(task);
+      } else {
+        task.status = widget.task.status;
+        DatabaseHelper.instance.updateTask(task);
+      }
+
+      widget.updateTaskList();
       Navigator.pop(context);
     }
   }
